@@ -1,3 +1,4 @@
+import { SuiClient, getFullnodeUrl } from "@mysten/sui.js/client";
 import * as web3 from "@solana/web3.js";
 
 interface Params {
@@ -20,6 +21,13 @@ export async function GET(request: Request, { params }: { params: Params }) {
 
       data.info = info;
     } else if (params.net_type == "sui") {
+      const suiClient = new SuiClient({
+        url: getFullnodeUrl(params.net_type.toString as any),
+      });
+      const info = suiClient.getObject({
+        id: params.address,
+      });
+      data.info = info;
     } else if (params.net_type == "aptos") {
     }
   } catch (error: any) {
